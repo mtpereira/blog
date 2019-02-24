@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mtpereira</title>
+    <link>https://mtpereira.com/</link>
+    <description>Recent content on mtpereira</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Manuel Tiago Pereira</copyright>
+    <lastBuildDate>Sun, 06 Nov 2016 10:21:42 +0000</lastBuildDate>
+    
+	<atom:link href="https://mtpereira.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Using ejson to store secrets for Terraform</title>
+      <link>https://mtpereira.com/2016/11/06/terraform-ejson/</link>
+      <pubDate>Sun, 06 Nov 2016 10:21:42 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/2016/11/06/terraform-ejson/</guid>
+      <description>I&amp;rsquo;ve been using Terraform to provision and configure some application deployed on Heroku, as well as some other infrastructure pieces on AWS. Since these configurations are kept on a git repository, I do not want any configuration values stored in clear text, to avoid having any sensitive information leaked. For this reason, I&amp;rsquo;ve searched for a solution to keep these secrets stored in a safe manner without too much configuration overhead.</description>
+    </item>
+    
+    <item>
+      <title>Local development with Kubernetes</title>
+      <link>https://mtpereira.com/2016/10/15/local-development-k8s/</link>
+      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/2016/10/15/local-development-k8s/</guid>
+      <description>Lately I&amp;rsquo;ve been working with Kubernetes in order to provide a self-service deployment platform. This ranges from setting up a production-ready cluster, to figuring out how to fit it in a development workflow.
+Although it&amp;rsquo;s getting easier, cheaper and faster to use cloud-provisioned environments for development, it can be a productivity-killer to have the cognitive overhead of dealing with remote hosts and what-not for running your code.
+Also, when developing Docker containers, we often do not wish to publish them, which can be a pain if you don&amp;rsquo;t have a private registry already setup.</description>
+    </item>
+    
+    <item>
+      <title>Ansible Tips: Testing roles using Vagrant and TravisCI</title>
+      <link>https://mtpereira.com/2015/06/02/ansible-tips-testing-roles/</link>
+      <pubDate>Tue, 02 Jun 2015 00:26:46 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/2015/06/02/ansible-tips-testing-roles/</guid>
+      <description>It&amp;rsquo;s very useful to keep your roles on TravisCI or other publicly available CI system: it enables you to verify that your commits and other contributions to your role don&amp;rsquo;t break it.
+On the other hand, it&amp;rsquo;s a little tedious to be constantly waiting for the CI to finish and give you some results. Heck, you might even feel tempted to git push without actually checking if your changes are OK!</description>
+    </item>
+    
+  </channel>
+</rss>

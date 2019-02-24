@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Using ejson to store secrets for Terraform &middot; Manuel Tiago Pereira</title>
+        <meta name="description" content="I&rsquo;ve been using Terraform to provision and configure some application deployed on Heroku, as well as some other infrastructure pieces on AWS. Since these configurations are kept on a git repository, I do not want any configuration values stored in clear text, to avoid having any sensitive information leaked. For this reason, I&rsquo;ve searched for a solution to keep these secrets stored in a safe manner without too much configuration overhead.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.54.0" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="https://mtpereira.com/dist/styles.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+    </head>
+    <body>
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="mtpereira" href="https://mtpereira.com/">mtpereira</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://mtpereira.com/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/mtpereira">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/coffee_nix">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="LinkedIn" title="LinkedIn" href="https://linkedin.com/in/mtpereira/">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Stack Overflow" title="Stack Overflow" href="https://stackoverflow.com/users/2220510/mtpereira">
+                                <i class="fa fa-stack-overflow"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:me@mtpereira.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about/">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Using ejson to store secrets for Terraform</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2016-11-06" itemprop="datePublished">2016/11/06</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">Manuel Tiago Pereira</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Estimated reading time: 3 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    
+
+<p>I&rsquo;ve been using <a href="https://terraform.io">Terraform</a> to provision and configure
+some application deployed on Heroku, as well as some other infrastructure pieces
+on AWS. Since these configurations are kept on a git repository, I do not want any
+configuration values stored in clear text, to avoid having any sensitive
+information leaked. For this reason, I&rsquo;ve searched for a solution to keep these
+secrets stored in a safe manner without too much configuration overhead. I&rsquo;ve
+decided to give <a href="https://github.com/Shopify/ejson">EJSON</a> a try for this
+particular use case, for a couple of reasons:</p>
+
+<ul>
+<li>It performs asymmetric encryption on the secrets with a pair of keys that are
+easy to share with your team, since the public key is actually stored on the
+<code>.ejson</code> file and the private key is just a string;</li>
+<li>It&rsquo;s installation is pretty simple, since EJSON is a Go binary and it&rsquo;s
+actually available on rubygems, so you can <code>gem install ejson</code>;</li>
+<li>It does not require any other piece of infrastructure besides your
+workstation;</li>
+<li>The secrets are kept in JSON files, with the keys in clear text and the values
+encrypted.</li>
+</ul>
+
+<p>This last bit is actually more interesting than it might look, since Terraform&rsquo;s
+<code>.tfvars</code> files, which store the configurations&rsquo; variables, are either JSON or
+HCL files. As such, we can simply decrypt our EJSON file without any
+other transformation or adaptation and pass it directly to Terraform!</p>
+
+<p>With all that being said, let&rsquo;s go through how to achieve this setup and how to use it
+efficiently.</p>
+
+<h1 id="setup">Setup</h1>
+
+<p>Assuming you&rsquo;re on macOS, here&rsquo;s how to install all the
+required tools:</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">brew install terraform
+gem install ejson</code></pre></div>
+
+<p>Now we need to generate a keypair for EJSON. By default, these are stored at
+<code>/opt/ejson/keys</code>. To keep it simple and to keep everything in your user&rsquo;s home,
+we&rsquo;ll add an alias for <code>ejson</code> that defaults to <code>~/.ejson/keys</code>. Adapt the last
+command to fit your particular shell setup.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">mkdir -p ~/.ejson/keys
+<span class="nb">alias</span> <span class="nv">ejson</span><span class="o">=</span><span class="s1">&#39;ejson --keydir ~/.ejson/keys&#39;</span>
+<span class="nb">echo</span> <span class="s2">&#34;alias ejson=&#39;ejson --keydir ~/.ejson/keys&#39;&#34;</span> &gt;&gt; ~/.bash_profile</code></pre></div>
+
+<h1 id="using-an-encrypted-tfvars-file">Using an encrypted <code>.tfvars</code> file</h1>
+
+<p>First, we need to create a new keypair:</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">ejson keygen -w</code></pre></div>
+
+<p>Now add the following to a <code>variables.tfvars.ejson</code> file, replacing
+<code>__OUTPUT_FROM_EJSON_KEYGEN__</code> with the public key outputted from the previous
+command:</p>
+
+<script type="application/javascript" src="//gist.github.com/mtpereira/f18ea33727b05c06c6e9399d3cdd6093.js?file=variables.tfvars.ejson"></script>
+
+<p>As you see, this format is immediately usable by Terraform, as it&rsquo;s just a JSON
+file, with key-value pairs that hold our Terraform variables.</p>
+
+<p>To encrypt the file, it&rsquo;s as easy as running:</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ ejson encrypt variables.tfvars.ejson
+Wrote <span class="m">211</span> bytes to variables.tfvars.ejson.</code></pre></div>
+
+<p>This is the file that you should add to your repository to save the variables
+safely.</p>
+
+<p>It&rsquo;s also pretty easy to decrypt it:</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">ejson decrypt variables.tfvars.ejson -o variables.tfvars</code></pre></div>
+
+<p>You should add these <code>.tfvars</code> files to your <code>.gitignore</code> so that they don&rsquo;t end
+up in your repository:</p>
+
+<script type="application/javascript" src="//gist.github.com/mtpereira/f18ea33727b05c06c6e9399d3cdd6093.js?file=.gitignore"></script>
+
+<p>This will keep the encrypted file intact and create a new, decrypted file.
+At this point, you&rsquo;d be able to run a <code>terraform plan</code> as per usual:</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">terraform plan -var-file variables.tfvars</code></pre></div>
+
+<h1 id="streamline-it-with-make">Streamline it with <code>make</code></h1>
+
+<p>We can create a very simple <code>Makefile</code> to stream line this process after the
+initial setup:</p>
+
+<script type="application/javascript" src="//gist.github.com/mtpereira/f18ea33727b05c06c6e9399d3cdd6093.js?file=Makefile"></script>
+
+<p>So now, you just need to run <code>make plan</code> and <code>make apply</code> to use your safely
+encrypted secrets.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>This is just a very simple way to keep your infrastructure&rsquo;s configuration
+secrets on a git repository, whilst keeping them readily available for Terraform
+to consume. I would use this strategy for simple bootstrapping and infrastructure
+provision and use tools such as
+<a href="https://www.vaultproject.io/">Vault</a> for more complex scenarios, for instance,
+applications dynamically fetching their configurations on startup.</p>
+
+<p>If you&rsquo;d like to discuss this post, please drop me a line using <a href="about">any of my contacts</a>.</p>
+
+<h1 id="resources">Resources</h1>
+
+<ol>
+<li><a href="https://github.com/Shopify/ejson">EJSON on Github</a></li>
+</ol>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/terraform/">terraform</a>, 
+            
+                <a href="/tags/ejson/">ejson</a>, 
+            
+                <a href="/tags/secrets/">secrets</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Using%20ejson%20to%20store%20secrets%20for%20Terraform&url=https%3a%2f%2fmtpereira.com%2f2016%2f11%2f06%2fterraform-ejson%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&title=Using%20ejson%20to%20store%20secrets%20for%20Terraform&url=https%3a%2f%2fmtpereira.com%2f2016%2f11%2f06%2fterraform-ejson%2f&summary="
+               onclick="window.open(this.href, 'linkedin-share', 'width=554,height=481');return false;">
+               <i class="fa fa-linkedin"></i>
+               <span class="hidden">LinkedIn</span>
+            </a>
+        
+    </div>
+</footer>
+
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="mtpereira" href="https://mtpereira.com/">mtpereira</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2016 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                    <span> and <a href="https://github.com/mtpereira/mtpereira.github.io">modified</a> by <a href="https://mtpereira.com/about">mtpereira</a></span>
+                </p>
+            </div>
+        </footer>
+    </body>
+</html>
+

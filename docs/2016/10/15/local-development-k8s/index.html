@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Local development with Kubernetes &middot; Manuel Tiago Pereira</title>
+        <meta name="description" content="Lately I&rsquo;ve been working with Kubernetes in order to provide a self-service deployment platform. This ranges from setting up a production-ready cluster, to figuring out how to fit it in a development workflow.
+Although it&rsquo;s getting easier, cheaper and faster to use cloud-provisioned environments for development, it can be a productivity-killer to have the cognitive overhead of dealing with remote hosts and what-not for running your code.
+Also, when developing Docker containers, we often do not wish to publish them, which can be a pain if you don&rsquo;t have a private registry already setup.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.54.0" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="https://mtpereira.com/dist/styles.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+    </head>
+    <body>
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="mtpereira" href="https://mtpereira.com/">mtpereira</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://mtpereira.com/index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/mtpereira">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/coffee_nix">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="LinkedIn" title="LinkedIn" href="https://linkedin.com/in/mtpereira/">
+                                <i class="fa fa-linkedin"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Stack Overflow" title="Stack Overflow" href="https://stackoverflow.com/users/2220510/mtpereira">
+                                <i class="fa fa-stack-overflow"></i>
+                            </a>
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:me@mtpereira.com">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="Blog" href="/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="About" href="/page/about/">About</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Local development with Kubernetes</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2016-10-15" itemprop="datePublished">2016/10/15</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">Manuel Tiago Pereira</a>
+            </span>
+        </span>
+    </p>
+    
+        <p class="post-reading post-line">
+            <span>Estimated reading time: 3 min</span>
+        </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    
+
+<p>Lately I&rsquo;ve been working with <a href="http://kubernetes.io/">Kubernetes</a> in order to
+provide a self-service deployment platform. This ranges from setting up a
+production-ready cluster, to figuring out how to fit it in a development
+workflow.</p>
+
+<p>Although it&rsquo;s getting easier, cheaper and faster to use cloud-provisioned
+environments for development, it can be a productivity-killer to have the
+cognitive overhead of dealing with remote hosts and what-not for running your
+code.</p>
+
+<p>Also, when developing Docker containers, we often do not wish to
+publish them, which can be a pain if you don&rsquo;t have a
+private registry already setup. The following is the setup that I&rsquo;ve found to
+deal with these issues, using
+<a href="https://github.com/kubernetes/minikube">minikube</a> running on macOS.</p>
+
+<h1 id="setup-minikube">Setup minikube</h1>
+
+<p>We&rsquo;ll be using <a href="https://github.com/mist64/xhyve">xhyve</a> to run minikube.
+This alternative is lighter and smaller than the default VirtualBox VM and also
+has the advantage of using Plan9 filesystem over Virtio for mounting your local
+filesystem on the VM. So far, this setup has been much more reliable for me when
+it comes to dealing with ownership and permissions of shared files than using
+vboxfs.</p>
+
+<p>Install all the required packages to run minikube on a xhyve VM:</p>
+
+<script type="application/javascript" src="//gist.github.com/mtpereira/7362206e271de79c545956afcc77af3a.js?file=minikube-setup.sh"></script>
+
+<p>To start a cluster on minikube using xhyve, run the following:</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">minikube start --vm-driver xhyve --insecure-registry localhost:5000</code></pre></div>
+
+<p>This will create a VM and configure a single-node Kubernetes cluster inside it.
+We&rsquo;ll see in a bit why we need the <code>--insecure-registry</code> flag.</p>
+
+<p>I&rsquo;d recommend to add this command to your shell&rsquo;s aliases so that you do not
+forget to start your cluster with these options:</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">alias</span> minikube-start<span class="o">=</span><span class="s1">&#39;minikube start --vm-driver xhyve --insecure-registry localhost:5000&#39;</span></code></pre></div>
+
+<h1 id="using-minikube-s-docker-daemon-from-our-localhost">Using minikube&rsquo;s Docker daemon from our localhost</h1>
+
+<p>Since we&rsquo;re already running a Docker daemon inside minikube&rsquo;s VM, we should take
+advantage of this instead of relying on another VM. This really saves up some
+resources on your host and keeps things simple.</p>
+
+<p>In order to do that, you just need to run the following and you&rsquo;re ready to go:</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">eval</span> <span class="k">$(</span>minikube docker-env<span class="k">)</span></code></pre></div>
+
+<h1 id="running-a-local-private-docker-registry">Running a local private Docker registry</h1>
+
+<p>Kubernetes provides an add-on for running a private Docker registry inside your
+cluster, which is documented
+<a href="https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/registry">here</a>.
+However, there are a couple of caveats that you need to consider when running it
+inside <code>minikube</code>.</p>
+
+<p>Currently, there&rsquo;s <a href="https://github.com/kubernetes/minikube/issues/461#issuecomment-238326420">limited
+support</a>
+for adding add-ons automatically to the Kubernetes cluster running on minikube. As
+such, our registry manifest will be a little different from the official one:</p>
+
+<script type="application/javascript" src="//gist.github.com/mtpereira/7362206e271de79c545956afcc77af3a.js?file=local-registry.yml"></script>
+
+<p>I&rsquo;ve also decided to keep this local registry ephemeral, which is okay for me at
+this point, given that I&rsquo;m dealing with really small images. This can be
+easily changed to use a persistent volume as described on the
+<a href="https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/registry">registry add-on documentation</a>.</p>
+
+<p>The <code>--insecure-registry localhost:5000</code> that we&rsquo;ve used on the <code>minikube start</code>
+command is relevant here, because it allows for the Docker daemon running on the
+minikube node to connect to an insecure Docker registry, without using SSL. This
+simplifies the setup process without any real disadvantage, since we&rsquo;ll be using
+this same Docker daemon to build and push our images, so nothing will be sent
+over external networks.</p>
+
+<p>Execute this command to deploy the registry on your cluster:</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl apply -f local-registry.yml</code></pre></div>
+
+<h1 id="tl-dr">TL;DR</h1>
+
+<script type="application/javascript" src="//gist.github.com/mtpereira/7362206e271de79c545956afcc77af3a.js?file=tldr.sh"></script>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>At this point, you&rsquo;ll now be able to build and push containers to a local
+private registry, as well as deploy them to a local Kubernetes cluster. I
+believe this a great setup to develop applications which will run on a similar
+environment in production, simplifying the development flow and setup and, at
+the same time, reducing the possibility of &ldquo;works-on-my-machine&rdquo; issues.</p>
+
+<p>If you&rsquo;d like to discuss this post, please drop me a line using <a href="about">any of my contacts</a>.</p>
+
+<h1 id="resources">Resources</h1>
+
+<ol>
+<li><a href="http://thenewstack.io/tutorial-configuring-ultimate-development-environment-kubernetes/">&ldquo;Configuring the Ultimate Development Environment for Kubernetes&rdquo;</a></li>
+<li><a href="https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/registry">&ldquo;Private Docker Registry in Kubernetes&rdquo;</a></li>
+</ol>
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/kubernetes/">kubernetes</a>, 
+            
+                <a href="/tags/development/">development</a>, 
+            
+                <a href="/tags/minikube/">minikube</a>, 
+            
+                <a href="/tags/macos/">macos</a>, 
+            
+                <a href="/tags/docker/">docker</a>, 
+            
+                <a href="/tags/registry/">registry</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Local%20development%20with%20Kubernetes&url=https%3a%2f%2fmtpereira.com%2f2016%2f10%2f15%2flocal-development-k8s%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&title=Local%20development%20with%20Kubernetes&url=https%3a%2f%2fmtpereira.com%2f2016%2f10%2f15%2flocal-development-k8s%2f&summary="
+               onclick="window.open(this.href, 'linkedin-share', 'width=554,height=481');return false;">
+               <i class="fa fa-linkedin"></i>
+               <span class="hidden">LinkedIn</span>
+            </a>
+        
+    </div>
+</footer>
+
+
+        
+    <div class="comments">
+        
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="mtpereira" href="https://mtpereira.com/">mtpereira</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2016 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                    <span> and <a href="https://github.com/mtpereira/mtpereira.github.io">modified</a> by <a href="https://mtpereira.com/about">mtpereira</a></span>
+                </p>
+            </div>
+        </footer>
+    </body>
+</html>
+

@@ -1,0 +1,48 @@
+baseurl = "https://mtpereira.com/"
+title = "mtpereira"
+theme = "ghostwriter"
+languageCode = "en-us"
+copyright = "Manuel Tiago Pereira"
+publishDir = "docs/"
+disqusShortname = "mtpereira"
+pygmentsCodefences = true
+pygmentsUseClasses = true
+
+[Privacy]
+
+[Privacy.disqus]
+    disable = true
+
+[Author]
+    name = "Manuel Tiago Pereira"
+
+[Taxonomies]
+    tag = "tags"
+
+[Params]
+    intro = true
+    headline = "mtpereira"
+    description = "Sharing thoughts on systems automation and development."
+    github = "https://github.com/mtpereira"
+    linkedin = "https://linkedin.com/in/mtpereira/"
+    twitter = "https://twitter.com/coffee_nix"
+    stackoverflow = "https://stackoverflow.com/users/2220510/mtpereira"
+    email = "me@mtpereira.com"
+    dateFormat = "2006/01/02"
+    readingTime = true
+    readingTimeText = "Estimated reading time:"
+    shareLinkedIn = true
+
+[Permalinks]
+    post = "/:year/:month/:day/:filename/"
+
+[[menu.main]]
+    name = "Blog"
+    url = "/"
+    weight = 1
+
+[[menu.main]]
+    name = "About"
+    url = "/page/about/"
+    weight = 2
+
