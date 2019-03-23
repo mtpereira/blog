@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Manuel Tiago Pereira</copyright>
-    <lastBuildDate>Sun, 06 Nov 2016 10:21:42 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 24 Feb 2019 09:42:46 +0000</lastBuildDate>
     
 	<atom:link href="https://mtpereira.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>About</title>
+      <link>https://mtpereira.com/page/about/</link>
+      <pubDate>Sun, 24 Feb 2019 09:42:46 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/page/about/</guid>
+      <description>Hi there! My name&amp;rsquo;s Manuel Tiago Pereira and I&amp;rsquo;m a Software Engineer passionate about systems automation and delivering production-ready applications. I&amp;rsquo;ve been around GNU/Linux systems since 2004 and, as of late, I&amp;rsquo;ve been dedicating my focus on how to enable the development of resilient applications on dynamic deployment environments.
+When I&amp;rsquo;m not breaking IT stuff, I&amp;rsquo;m listening to music, playing card/board games, cycling, running or practicing Aikido.
+You can find more about me and my work on the following pages:</description>
+    </item>
     
     <item>
       <title>Using ejson to store secrets for Terraform</title>

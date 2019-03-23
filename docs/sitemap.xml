@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mtpereira.com/page/about/</loc>
+    <lastmod>2019-02-24T09:42:46+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mtpereira.com/2016/11/06/terraform-ejson/</loc>
     <lastmod>2016-11-06T10:21:42+00:00</lastmod>
   </url>
@@ -72,6 +77,12 @@
   </url>
   
   <url>
+    <loc>https://mtpereira.com/page/</loc>
+    <lastmod>2019-02-24T09:42:46+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://mtpereira.com/post/</loc>
     <lastmod>2016-11-06T10:21:42+00:00</lastmod>
     <priority>0</priority>
@@ -121,7 +132,7 @@
   
   <url>
     <loc>https://mtpereira.com/</loc>
-    <lastmod>2016-11-06T10:21:42+00:00</lastmod>
+    <lastmod>2019-02-24T09:42:46+00:00</lastmod>
     <priority>0</priority>
   </url>
   

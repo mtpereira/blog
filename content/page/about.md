@@ -1,7 +1,8 @@
 ---
 title: "About"
 date: 2019-02-24T09:42:46Z
-draft: true
+type: static
+draft: false
 ---
 
 Hi there! My name's Manuel Tiago Pereira and I'm a Software Engineer passionate about systems automation and delivering production-ready applications. I've been around GNU/Linux systems since 2004 and, as of late, I've been dedicating my focus on how to enable the development of resilient applications on dynamic deployment environments.
