@@ -1,10 +1,50 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mtpereira.com/</loc>
+    <lastmod>2020-03-12T21:30:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/2020/03/12/on-working-remotely/</loc>
+    <lastmod>2020-03-12T21:30:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/post/</loc>
+    <lastmod>2020-03-12T21:30:03+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mtpereira.com/page/about/</loc>
     <lastmod>2019-02-24T09:42:46+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/page/</loc>
+    <lastmod>2019-02-24T09:42:46+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/tags/ejson/</loc>
+    <lastmod>2016-11-06T10:21:42+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/tags/secrets/</loc>
+    <lastmod>2016-11-06T10:21:42+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/tags/</loc>
+    <lastmod>2016-11-06T10:21:42+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/tags/terraform/</loc>
+    <lastmod>2016-11-06T10:21:42+00:00</lastmod>
   </url>
   
   <url>
@@ -13,8 +53,43 @@
   </url>
   
   <url>
+    <loc>https://mtpereira.com/tags/development/</loc>
+    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/tags/docker/</loc>
+    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/tags/kubernetes/</loc>
+    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mtpereira.com/2016/10/15/local-development-k8s/</loc>
     <lastmod>2016-10-15T08:10:12+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/tags/macos/</loc>
+    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/tags/minikube/</loc>
+    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/tags/registry/</loc>
+    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mtpereira.com/tags/ansible/</loc>
+    <lastmod>2015-06-02T00:26:46+00:00</lastmod>
   </url>
   
   <url>
@@ -23,117 +98,28 @@
   </url>
   
   <url>
-    <loc>https://mtpereira.com/tags/ansible/</loc>
-    <lastmod>2015-06-02T00:26:46+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://mtpereira.com/tags/ci/</loc>
     <lastmod>2015-06-02T00:26:46+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/tags/development/</loc>
-    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/tags/docker/</loc>
-    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/tags/ejson/</loc>
-    <lastmod>2016-11-06T10:21:42+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mtpereira.com/tags/ghost/</loc>
     <lastmod>2015-06-02T00:26:46+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/tags/kubernetes/</loc>
-    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/tags/macos/</loc>
-    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/tags/minikube/</loc>
-    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/page/</loc>
-    <lastmod>2019-02-24T09:42:46+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/post/</loc>
-    <lastmod>2016-11-06T10:21:42+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/tags/registry/</loc>
-    <lastmod>2016-10-15T08:10:12+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/tags/secrets/</loc>
-    <lastmod>2016-11-06T10:21:42+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/tags/</loc>
-    <lastmod>2015-06-02T00:26:46+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/tags/terraform/</loc>
-    <lastmod>2016-11-06T10:21:42+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mtpereira.com/tags/testing/</loc>
     <lastmod>2015-06-02T00:26:46+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mtpereira.com/tags/travisci/</loc>
     <lastmod>2015-06-02T00:26:46+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://mtpereira.com/tags/vagrant/</loc>
     <lastmod>2015-06-02T00:26:46+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://mtpereira.com/</loc>
-    <lastmod>2019-02-24T09:42:46+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
 </urlset>
