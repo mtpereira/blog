@@ -8,7 +8,7 @@
 On the other hand, it&rsquo;s a little tedious to be constantly waiting for the CI to finish and give you some results. Heck, you might even feel tempted to git push without actually checking if your changes are OK!">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
-        <meta name="generator" content="Hugo 0.54.0" />
+        <meta name="generator" content="Hugo 0.67.0" />
         <meta name="robots" content="index,follow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
@@ -97,123 +97,101 @@ On the other hand, it&rsquo;s a little tedious to be constantly waiting for the 
         <div class="post-content clearfix" itemprop="articleBody">
     
 
-    
-
-<p>It&rsquo;s very useful to keep your roles on <a href="https://travis-ci.org">TravisCI</a> or other publicly available CI system: it enables you to verify that your commits and other contributions to your role don&rsquo;t break it.</p>
-
+    <p>It&rsquo;s very useful to keep your roles on <a href="https://travis-ci.org">TravisCI</a> or other publicly available CI system: it enables you to verify that your commits and other contributions to your role don&rsquo;t break it.</p>
 <p>On the other hand, it&rsquo;s a little tedious to be constantly waiting for the CI to finish and give you some results. Heck, you might even feel tempted to <code>git push</code> without actually checking if your changes are OK! ;)</p>
-
 <p>For that reason, I find it really useful to keep a set of tools on each role&rsquo;s repository to be able to check if I&rsquo;m breaking anything whilst introducing new features or modifying existing ones.</p>
-
 <p>I&rsquo;ll be using the role <a href="https://github.com/mtpereira/ansible-ghost">mtpereira.ghost</a> as an example.</p>
-
 <h1 id="playbook-for-testing">Playbook for testing</h1>
-
 <p>A <code>test.yml</code> playbook is used for both TravisCI and Vagrant in order to run the role and testing the resulting host&rsquo;s behaviour on both environments.</p>
-
 <p>A first play is used for <strong>setting up</strong> our tests:</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">    </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>-<span class="w"> </span>apply<span class="w"> </span>role<span class="w">
-</span><span class="w">      </span>hosts<span class="p">:</span><span class="w"> </span>all<span class="w">
-</span><span class="w">      </span>tags<span class="p">:</span><span class="w"> </span>ghost_tests_apply<span class="w">
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>- apply<span class="w"> </span>role<span class="w">
+</span><span class="w">      </span><span class="k">hosts</span><span class="p">:</span><span class="w"> </span>all<span class="w">
+</span><span class="w">      </span><span class="k">tags</span><span class="p">:</span><span class="w"> </span>ghost_tests_apply<span class="w">
 </span><span class="w">    
-</span><span class="w">      </span>roles<span class="p">:</span><span class="w">
-</span><span class="w">        </span>-<span class="w"> </span>.<span class="w">
+</span><span class="w">      </span><span class="k">roles</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span>- .<span class="w">
 </span><span class="w">    
-</span><span class="w">      </span>post_tasks<span class="p">:</span><span class="w">
-</span><span class="w">	    </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>-<span class="w"> </span>sleep<span class="w"> </span>for<span class="w"> </span>Ghost<span class="w"> </span>startup<span class="w">
-</span><span class="w">	      </span>pause<span class="p">:</span><span class="w">
-</span><span class="w">	        </span>seconds<span class="p">:</span><span class="w"> </span><span class="m">15</span><span class="w">
-</span><span class="w">	        </span>prompt<span class="p">:</span><span class="w"> </span><span class="s2">&#34;Waiting for Ghost startup...&#34;</span><span class="w">
+</span><span class="w">      </span><span class="k">post_tasks</span><span class="p">:</span><span class="w">
+</span><span class="w">	    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>- sleep<span class="w"> </span>for<span class="w"> </span>Ghost<span class="w"> </span>startup<span class="w">
+</span><span class="w">	      </span><span class="k">pause</span><span class="p">:</span><span class="w">
+</span><span class="w">	        </span><span class="k">seconds</span><span class="p">:</span><span class="w"> </span><span class="m">15</span><span class="w">
+</span><span class="w">	        </span><span class="k">prompt</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Waiting for Ghost startup...&#34;</span><span class="w">
 </span><span class="w">    
-</span><span class="w">        </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>-<span class="w"> </span>install<span class="w"> </span>curl<span class="w">
-</span><span class="w">	        </span>apt<span class="p">:</span><span class="w">
-</span><span class="w">	          </span>pkg<span class="p">:</span><span class="w"> </span>curl<span class="w">
-</span><span class="w">	          </span>install_recommends<span class="p">:</span><span class="w"> </span>no<span class="w">
-</span><span class="w">	          </span>state<span class="p">:</span><span class="w"> </span>present<span class="w">
-</span><span class="w">	        </span>sudo<span class="p">:</span><span class="w"> </span>yes</code></pre></div>
-
+</span><span class="w">        </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>- install<span class="w"> </span>curl<span class="w">
+</span><span class="w">	        </span><span class="k">apt</span><span class="p">:</span><span class="w">
+</span><span class="w">	          </span><span class="k">pkg</span><span class="p">:</span><span class="w"> </span>curl<span class="w">
+</span><span class="w">	          </span><span class="k">install_recommends</span><span class="p">:</span><span class="w"> </span>no<span class="w">
+</span><span class="w">	          </span><span class="k">state</span><span class="p">:</span><span class="w"> </span>present<span class="w">
+</span><span class="w">	        </span><span class="k">sudo</span><span class="p">:</span><span class="w"> </span>yes</code></pre></div>
 <p>Notice that in order to be able to execute the role from the current directory, it&rsquo;s necessary to reference it by its path, <code>.</code>. This has several advantages over including all the role&rsquo;s files (tasks, handlers, vars, etc) directly onto the playbook, which is something that I&rsquo;ve done previously on several roles:</p>
-
 <ul>
 <li>You&rsquo;re actually running the role as a whole, which might prove very different than running its individual components. This is <strong>crucial</strong> when you&rsquo;re role has dependencies on other roles, as they&rsquo;ll only be executed when the role is invoked. In this example, the role depends on external roles and, as such, it&rsquo;s necessary to guarantee that they&rsquo;re executed properly and that they provide the required behaviour.</li>
 <li>When you&rsquo;ll add new files to the role, you won&rsquo;t have to remember to add them to the <code>test.yml</code> playbook.</li>
 <li>It&rsquo;s cleaner and easier to read.</li>
 </ul>
-
 <p>Also notice the <code>post_tasks</code> block after the role. These are for ensuring that we&rsquo;re in conditions to actually run the tests and are very specific to this case.</p>
-
 <p>The next play includes both the <strong>execution</strong> and <strong>validation</strong> steps of the tests:</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">	</span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>-<span class="w"> </span>run<span class="w"> </span>tests<span class="w">
-</span><span class="w">	  </span>hosts<span class="p">:</span><span class="w"> </span>all<span class="w">
-</span><span class="w">	  </span>tags<span class="p">:</span><span class="w"> </span>ghost_tests_run<span class="w">
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">	</span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>- run<span class="w"> </span>tests<span class="w">
+</span><span class="w">	  </span><span class="k">hosts</span><span class="p">:</span><span class="w"> </span>all<span class="w">
+</span><span class="w">	  </span><span class="k">tags</span><span class="p">:</span><span class="w"> </span>ghost_tests_run<span class="w">
 </span><span class="w">    
-</span><span class="w">	  </span>tasks<span class="p">:</span><span class="w">
-</span><span class="w">	    </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>-<span class="w"> </span>check<span class="w"> </span>if<span class="w"> </span>ghost<span class="w"> </span>is<span class="w"> </span>listening<span class="w">
-</span><span class="w">	      </span>command<span class="p">:</span><span class="w"> </span>curl<span class="w"> </span>--silent<span class="w"> </span>{{<span class="w"> </span>ghost_config_url<span class="w"> </span>}}<span class="w">
-</span><span class="w">	      </span>changed_when<span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-</span><span class="w">	      </span>ignore_errors<span class="p">:</span><span class="w"> </span>yes<span class="w">
-</span><span class="w">	      </span>register<span class="p">:</span><span class="w"> </span>ghost_test_listening<span class="w">
+</span><span class="w">	  </span><span class="k">tasks</span><span class="p">:</span><span class="w">
+</span><span class="w">	    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>- check<span class="w"> </span>if<span class="w"> </span>ghost<span class="w"> </span>is<span class="w"> </span>listening<span class="w">
+</span><span class="w">	      </span><span class="k">command</span><span class="p">:</span><span class="w"> </span>curl<span class="w"> </span>--silent<span class="w"> </span>{{<span class="w"> </span>ghost_config_url<span class="w"> </span>}}<span class="w">
+</span><span class="w">	      </span><span class="k">changed_when</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">	      </span><span class="k">ignore_errors</span><span class="p">:</span><span class="w"> </span>yes<span class="w">
+</span><span class="w">	      </span><span class="k">register</span><span class="p">:</span><span class="w"> </span>ghost_test_listening<span class="w">
 </span><span class="w">    
-</span><span class="w">	    </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>-<span class="w"> </span>check<span class="w"> </span>why<span class="w"> </span>ghost<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>listening<span class="w">
-</span><span class="w">	      </span>command<span class="p">:</span><span class="w"> </span>node<span class="w"> </span>{{<span class="w"> </span>ghost_install_dir<span class="w"> </span>}}/index.js<span class="w">
-</span><span class="w">	      </span>args<span class="p">:</span><span class="w">
-</span><span class="w">	        </span>chdir<span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ ghost_install_dir }}&#34;</span><span class="w">
-</span><span class="w">	        </span>env<span class="p">:</span><span class="w">
-</span><span class="w">	          </span>NODE_ENV<span class="p">:</span><span class="w"> </span>production<span class="w">
-</span><span class="w">	      </span>changed_when<span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-</span><span class="w">	      </span>ignore_errors<span class="p">:</span><span class="w"> </span>yes<span class="w">
-</span><span class="w">	      </span>sudo_user<span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ ghost_user_name }}&#34;</span><span class="w">
-</span><span class="w">	      </span>sudo<span class="p">:</span><span class="w"> </span>yes<span class="w">
-</span><span class="w">	      </span>when<span class="p">:</span><span class="w"> </span>ghost_test_listening<span class="w"> </span>|<span class="w"> </span>failed<span class="w">
+</span><span class="w">	    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>- check<span class="w"> </span>why<span class="w"> </span>ghost<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>listening<span class="w">
+</span><span class="w">	      </span><span class="k">command</span><span class="p">:</span><span class="w"> </span>node<span class="w"> </span>{{<span class="w"> </span>ghost_install_dir<span class="w"> </span>}}/index.js<span class="w">
+</span><span class="w">	      </span><span class="k">args</span><span class="p">:</span><span class="w">
+</span><span class="w">	        </span><span class="k">chdir</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ ghost_install_dir }}&#34;</span><span class="w">
+</span><span class="w">	        </span><span class="k">env</span><span class="p">:</span><span class="w">
+</span><span class="w">	          </span><span class="k">NODE_ENV</span><span class="p">:</span><span class="w"> </span>production<span class="w">
+</span><span class="w">	      </span><span class="k">changed_when</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">	      </span><span class="k">ignore_errors</span><span class="p">:</span><span class="w"> </span>yes<span class="w">
+</span><span class="w">	      </span><span class="k">sudo_user</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ ghost_user_name }}&#34;</span><span class="w">
+</span><span class="w">	      </span><span class="k">sudo</span><span class="p">:</span><span class="w"> </span>yes<span class="w">
+</span><span class="w">	      </span><span class="k">when</span><span class="p">:</span><span class="w"> </span>ghost_test_listening<span class="w"> </span>|<span class="w"> </span>failed<span class="w">
 </span><span class="w">    
-</span><span class="w">	    </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>-<span class="w"> </span>assert<span class="w"> </span>that<span class="w"> </span>Ghost<span class="w"> </span>is<span class="w"> </span>listening<span class="w">
-</span><span class="w">	      </span>assert<span class="p">:</span><span class="w">
-</span><span class="w">	        </span>that<span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ ghost_test_listening | success }}&#34;</span><span class="w">
+</span><span class="w">	    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>- assert<span class="w"> </span>that<span class="w"> </span>Ghost<span class="w"> </span>is<span class="w"> </span>listening<span class="w">
+</span><span class="w">	      </span><span class="k">assert</span><span class="p">:</span><span class="w">
+</span><span class="w">	        </span><span class="k">that</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ ghost_test_listening | success }}&#34;</span><span class="w">
 </span><span class="w">    
-</span><span class="w">	    </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>-<span class="w"> </span>check<span class="w"> </span>if<span class="w"> </span>Nginx<span class="w"> </span>is<span class="w"> </span>proxying<span class="w"> </span>Ghost<span class="w">
-</span><span class="w">	      </span>command<span class="p">:</span><span class="w"> </span>curl<span class="w"> </span>--silent<span class="w"> </span>localhost<span class="p">:</span>{{<span class="w"> </span>ghost_nginx_port<span class="w"> </span>}}<span class="w">
-</span><span class="w">	      </span>changed_when<span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-</span><span class="w">	      </span>ignore_errors<span class="p">:</span><span class="w"> </span>yes<span class="w">
-</span><span class="w">	      </span>register<span class="p">:</span><span class="w"> </span>ghost_test_nginx_proxy<span class="w">
+</span><span class="w">	    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>- check<span class="w"> </span>if<span class="w"> </span>Nginx<span class="w"> </span>is<span class="w"> </span>proxying<span class="w"> </span>Ghost<span class="w">
+</span><span class="w">	      </span><span class="k">command</span><span class="p">:</span><span class="w"> </span>curl<span class="w"> </span>--silent<span class="w"> </span>localhost<span class="p">:</span>{{<span class="w"> </span>ghost_nginx_port<span class="w"> </span>}}<span class="w">
+</span><span class="w">	      </span><span class="k">changed_when</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">	      </span><span class="k">ignore_errors</span><span class="p">:</span><span class="w"> </span>yes<span class="w">
+</span><span class="w">	      </span><span class="k">register</span><span class="p">:</span><span class="w"> </span>ghost_test_nginx_proxy<span class="w">
 </span><span class="w">    
-</span><span class="w">	    </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>-<span class="w"> </span>assert<span class="w"> </span>that<span class="w"> </span>Nginx<span class="w"> </span>is<span class="w"> </span>proxying<span class="w"> </span>Ghost<span class="w">
-</span><span class="w">	      </span>assert<span class="p">:</span><span class="w">
-</span><span class="w">	        </span>that<span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ ghost_test_nginx_proxy | success }}&#34;</span><span class="w">
+</span><span class="w">	    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>- assert<span class="w"> </span>that<span class="w"> </span>Nginx<span class="w"> </span>is<span class="w"> </span>proxying<span class="w"> </span>Ghost<span class="w">
+</span><span class="w">	      </span><span class="k">assert</span><span class="p">:</span><span class="w">
+</span><span class="w">	        </span><span class="k">that</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ ghost_test_nginx_proxy | success }}&#34;</span><span class="w">
 </span><span class="w">    
-</span><span class="w">	    </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>-<span class="w"> </span>check<span class="w"> </span>if<span class="w"> </span>Ghost<span class="w"> </span>admin<span class="w"> </span>is<span class="w"> </span>protected<span class="w"> </span>from<span class="w"> </span>outside<span class="w">
-</span><span class="w">	      </span>command<span class="p">:</span><span class="w"> </span>curl<span class="w"> </span>--silent<span class="w"> </span>--head<span class="w"> </span>localhost<span class="p">:</span>{{<span class="w"> </span>ghost_nginx_port<span class="w"> </span>}}/ghost/setup/<span class="w">
-</span><span class="w">	      </span>changed_when<span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-</span><span class="w">	      </span>ignore_errors<span class="p">:</span><span class="w"> </span>yes<span class="w">
-</span><span class="w">	      </span>register<span class="p">:</span><span class="w"> </span>ghost_test_nginx_admin<span class="w">
+</span><span class="w">	    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>- check<span class="w"> </span>if<span class="w"> </span>Ghost<span class="w"> </span>admin<span class="w"> </span>is<span class="w"> </span>protected<span class="w"> </span>from<span class="w"> </span>outside<span class="w">
+</span><span class="w">	      </span><span class="k">command</span><span class="p">:</span><span class="w"> </span>curl<span class="w"> </span>--silent<span class="w"> </span>--head<span class="w"> </span>localhost<span class="p">:</span>{{<span class="w"> </span>ghost_nginx_port<span class="w"> </span>}}/ghost/setup/<span class="w">
+</span><span class="w">	      </span><span class="k">changed_when</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="w">	      </span><span class="k">ignore_errors</span><span class="p">:</span><span class="w"> </span>yes<span class="w">
+</span><span class="w">	      </span><span class="k">register</span><span class="p">:</span><span class="w"> </span>ghost_test_nginx_admin<span class="w">
 </span><span class="w">    
-</span><span class="w">	    </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>-<span class="w"> </span>assert<span class="w"> </span>that<span class="w"> </span>Ghost<span class="w"> </span>admin<span class="w"> </span>is<span class="w"> </span>protected<span class="w"> </span>from<span class="w"> </span>outside<span class="w">
-</span><span class="w">	      </span>assert<span class="p">:</span><span class="w">
-</span><span class="w">	        </span>that<span class="p">:</span><span class="w"> </span><span class="s2">&#34;&#39;404 Not Found&#39; in ghost_test_nginx_admin.stdout&#34;</span><span class="w"> </span></code></pre></div>
-
+</span><span class="w">	    </span>- <span class="k">name</span><span class="p">:</span><span class="w"> </span>tests<span class="w"> </span>- assert<span class="w"> </span>that<span class="w"> </span>Ghost<span class="w"> </span>admin<span class="w"> </span>is<span class="w"> </span>protected<span class="w"> </span>from<span class="w"> </span>outside<span class="w">
+</span><span class="w">	      </span><span class="k">assert</span><span class="p">:</span><span class="w">
+</span><span class="w">	        </span><span class="k">that</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;&#39;404 Not Found&#39; in ghost_test_nginx_admin.stdout&#34;</span><span class="w"> </span></code></pre></div>
 <p>There are a few note-worthy details here:</p>
-
 <ul>
 <li><code>ignore_errors: yes</code> ensures that even if our exercise setup returns an erroneous exit code, we&rsquo;ll still get to assert it, which effectively separates the execution and the validation on different tasks.</li>
 <li><code>changed_when: false</code> avoids that our tests change the idempotence tests&rsquo; results on TravisCI.</li>
 <li>Testing using Ansible is not that pretty but is simple enough for testing role&rsquo;s as a atomic component of larger playbooks (which should probably be tested using something like <a href="http://serverspec.org/">Serverspec</a>.</li>
 </ul>
-
 <h1 id="ansible-galaxy-requirements-file">Ansible Galaxy requirements file</h1>
-
 <p>If the role depends on other roles, it&rsquo;s necessary to add a <code>requirements.yml</code> file for fetching said roles both locally and on TravisCI:</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">	</span>-<span class="w"> </span>src<span class="p">:</span><span class="w"> </span>nodesource.node<span class="w">
-</span><span class="w">	  </span>version<span class="p">:</span><span class="w"> </span>master<span class="w">
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">	</span>- <span class="k">src</span><span class="p">:</span><span class="w"> </span>nodesource.node<span class="w">
+</span><span class="w">	  </span><span class="k">version</span><span class="p">:</span><span class="w"> </span>master<span class="w">
 </span><span class="w">    
-</span><span class="w">	</span>-<span class="w"> </span>src<span class="p">:</span><span class="w"> </span>jdauphant.nginx<span class="w">
-</span><span class="w">	  </span>version<span class="p">:</span><span class="w"> </span>v1.<span class="m">3.4</span></code></pre></div>
-
+</span><span class="w">	</span>- <span class="k">src</span><span class="p">:</span><span class="w"> </span>jdauphant.nginx<span class="w">
+</span><span class="w">	  </span><span class="k">version</span><span class="p">:</span><span class="w"> </span>v1<span class="m">.3.4</span></code></pre></div>
 <h1 id="vagrantfile">Vagrantfile</h1>
-
 <p>Usually I keep a Vagrantfile that looks something like this.</p>
-
 <div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby">	<span class="n">boxes</span> <span class="o">=</span> <span class="p">{</span>
 	  <span class="s2">&#34;ghost-debian-wheezy&#34;</span> <span class="o">=&gt;</span> <span class="p">{</span>
 	                        <span class="ss">:box</span> <span class="o">=&gt;</span> <span class="s2">&#34;opscode-debian-7.8&#34;</span><span class="p">,</span>
@@ -236,9 +214,9 @@ On the other hand, it&rsquo;s a little tedious to be constantly waiting for the 
 	    <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="n">box_name</span> <span class="k">do</span> <span class="o">|</span><span class="n">machine</span><span class="o">|</span>
 	      <span class="n">machine</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="n">box</span><span class="o">[</span><span class="ss">:box</span><span class="o">]</span>
 	      <span class="n">machine</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box_url</span> <span class="o">=</span> <span class="n">box</span><span class="o">[</span><span class="ss">:url</span><span class="o">]</span>
-	      <span class="n">machine</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="s2">&#34;%s&#34;</span> <span class="sx">% box_name
-</span><span class="sx">
-</span><span class="sx">	 </span>      <span class="n">machine</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="s2">&#34;virtualbox&#34;</span> <span class="k">do</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span>
+	      <span class="n">machine</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="s2">&#34;%s&#34;</span> <span class="o">%</span> <span class="n">box_name</span>
+
+	      <span class="n">machine</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="s2">&#34;virtualbox&#34;</span> <span class="k">do</span> <span class="o">|</span><span class="n">v</span><span class="o">|</span>
 	        <span class="n">v</span><span class="o">.</span><span class="n">customize</span> <span class="o">[</span><span class="s2">&#34;modifyvm&#34;</span><span class="p">,</span> <span class="ss">:id</span><span class="p">,</span> <span class="s2">&#34;--cpuexecutioncap&#34;</span><span class="p">,</span> <span class="n">box</span><span class="o">[</span><span class="ss">:cpu</span><span class="o">]]</span>
 	        <span class="n">v</span><span class="o">.</span><span class="n">customize</span> <span class="o">[</span><span class="s2">&#34;modifyvm&#34;</span><span class="p">,</span> <span class="ss">:id</span><span class="p">,</span> <span class="s2">&#34;--memory&#34;</span><span class="p">,</span>          <span class="n">box</span><span class="o">[</span><span class="ss">:ram</span><span class="o">]]</span>
 	      <span class="k">end</span>
@@ -257,33 +235,22 @@ On the other hand, it&rsquo;s a little tedious to be constantly waiting for the 
 	    <span class="k">end</span>
 	  <span class="k">end</span>
 	<span class="k">end</span></code></pre></div>
-
 <p>A multihost Vagrantfile allows for testing against multiple operating systems, which might prove difficult to do on a public CI system. In this case, we have a Ubuntu and a Debian host. If we run <code>vagrant up</code> we&rsquo;ll provision both VMs but we can also specify a name, so that it&rsquo;ll only provision that host:</p>
-
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">vagrant up ghost-ubuntu-trusty</code></pre></div>
-
 <p>The <code>ANSIBLE_VERBOSE</code> environment variable enables controlling Ansible&rsquo;s verbosity whilst still using Vagrant for testing:</p>
-
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">ANSIBLE_VERBOSE</span><span class="o">=</span>vv vagrant provision</code></pre></div>
-
 <p>The same goes for <code>ANSIBLE_TAGS</code>, for controlling which tags to run. This is very useful for decreasing the write-test-debug cycle on specific Ansible tasks. Tagging your role properly is crucial for this, which we&rsquo;ll explore on a future post.</p>
-
 <h1 id="travisci">TravisCI</h1>
-
 <p>The <code>.travis.yml</code> file that I use here is the same found on most roles: it tests the role and then tests it&rsquo;s idempotence. It uses the same exact <code>test.yml</code> playbook used on Vagrant. The only note-worthy detail here is that we need to run <code>ansible-galaxy</code> on the <code>before_script</code> block:</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">install<span class="p">:</span><span class="w">
-</span><span class="w">  </span>-<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>ansible==<span class="m">1.9</span>.<span class="m">1</span><span class="w">
-</span><span class="w">  </span>-<span class="w"> </span><span class="s2">&#34;printf &#39;[defaults]\\nroles_path = ../&#39; &gt; ansible.cfg&#34;</span><span class="w">
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="k">install</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- pip<span class="w"> </span>install<span class="w"> </span>ansible==<span class="m">1.9.1</span><span class="w">
+</span><span class="w">  </span>- <span class="s2">&#34;printf &#39;[defaults]\\nroles_path = ../&#39; &gt; ansible.cfg&#34;</span><span class="w">
 </span><span class="w">
-</span><span class="w"></span>before_script<span class="p">:</span><span class="w">
-</span><span class="w">  </span>-<span class="w"> </span>echo<span class="w"> </span>localhost<span class="w"> </span>&gt;<span class="w"> </span>inventory<span class="w">
-</span><span class="w">  </span>-<span class="w"> </span>ansible-galaxy<span class="w"> </span>install<span class="w"> </span>--role-file<span class="w"> </span>requirements.yml</code></pre></div>
-
+</span><span class="w"></span><span class="k">before_script</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- echo<span class="w"> </span>localhost<span class="w"> </span>&gt;<span class="w"> </span>inventory<span class="w">
+</span><span class="w">  </span>- ansible-galaxy<span class="w"> </span>install<span class="w"> </span>--role-file<span class="w"> </span>requirements.yml</code></pre></div>
 <h1 id="conclusion">Conclusion</h1>
-
 <p>With these tools, I find that the role&rsquo;s development cycle usually goes something like this:</p>
-
 <ol>
 <li>Provision hosts and run test playbook with <code>vagrant up</code></li>
 <li>Fix bugs</li>
@@ -294,11 +261,8 @@ On the other hand, it&rsquo;s a little tedious to be constantly waiting for the 
 <li>Go to 1. if necessary</li>
 <li><code>vagrant destroy</code> for clean up</li>
 </ol>
-
 <p>If you have any question or if you&rsquo;ve found some mistake on this post, please drop me a line using <a href="about">any of my contacts</a>.</p>
-
 <h1 id="resources">Resources</h1>
-
 <ol>
 <li><a href="https://servercheck.in/blog/testing-ansible-roles-travis-ci-github">&ldquo;Testing Ansible Roles with Travis CI on GitHub&rdquo;</a></li>
 </ol>
@@ -369,7 +333,7 @@ On the other hand, it&rsquo;s a little tedious to be constantly waiting for the 
                 </div>
 
                 <p class="footer-copyright">
-                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                    <span>&copy; 2020 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
                 </p>
                 <p class="footer-copyright">
                     <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>

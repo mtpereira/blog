@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>mtpereira</title>
@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Manuel Tiago Pereira</copyright>
-    <lastBuildDate>Sun, 24 Feb 2019 09:42:46 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 12 Mar 2020 21:30:03 +0000</lastBuildDate>
     
 	<atom:link href="https://mtpereira.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>On Working Remotely</title>
+      <link>https://mtpereira.com/2020/03/12/on-working-remotely/</link>
+      <pubDate>Thu, 12 Mar 2020 21:30:03 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/2020/03/12/on-working-remotely/</guid>
+      <description>Having worked remotely before as a software engineer in different settings and finding myself in a fully remote position nowadays, I&amp;rsquo;ve discovered that it is not as easy as one might think at first. There are a few obstacles and pitfalls you might encounter.
+Fortunately, I&amp;rsquo;ve also found a few methods, tools and tips that really helped me and you might find useful as well.
+Routines   Find a schedule for your work hours and stick to it as close as possible.</description>
+    </item>
     
     <item>
       <title>About</title>

@@ -9,7 +9,7 @@ Although it&rsquo;s getting easier, cheaper and faster to use cloud-provisioned 
 Also, when developing Docker containers, we often do not wish to publish them, which can be a pain if you don&rsquo;t have a private registry already setup.">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
-        <meta name="generator" content="Hugo 0.54.0" />
+        <meta name="generator" content="Hugo 0.67.0" />
         <meta name="robots" content="index,follow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
@@ -98,106 +98,77 @@ Also, when developing Docker containers, we often do not wish to publish them, w
         <div class="post-content clearfix" itemprop="articleBody">
     
 
-    
-
-<p>Lately I&rsquo;ve been working with <a href="http://kubernetes.io/">Kubernetes</a> in order to
+    <p>Lately I&rsquo;ve been working with <a href="http://kubernetes.io/">Kubernetes</a> in order to
 provide a self-service deployment platform. This ranges from setting up a
 production-ready cluster, to figuring out how to fit it in a development
 workflow.</p>
-
 <p>Although it&rsquo;s getting easier, cheaper and faster to use cloud-provisioned
 environments for development, it can be a productivity-killer to have the
 cognitive overhead of dealing with remote hosts and what-not for running your
 code.</p>
-
 <p>Also, when developing Docker containers, we often do not wish to
 publish them, which can be a pain if you don&rsquo;t have a
 private registry already setup. The following is the setup that I&rsquo;ve found to
 deal with these issues, using
 <a href="https://github.com/kubernetes/minikube">minikube</a> running on macOS.</p>
-
 <h1 id="setup-minikube">Setup minikube</h1>
-
 <p>We&rsquo;ll be using <a href="https://github.com/mist64/xhyve">xhyve</a> to run minikube.
 This alternative is lighter and smaller than the default VirtualBox VM and also
 has the advantage of using Plan9 filesystem over Virtio for mounting your local
 filesystem on the VM. So far, this setup has been much more reliable for me when
 it comes to dealing with ownership and permissions of shared files than using
 vboxfs.</p>
-
 <p>Install all the required packages to run minikube on a xhyve VM:</p>
-
-<script type="application/javascript" src="//gist.github.com/mtpereira/7362206e271de79c545956afcc77af3a.js?file=minikube-setup.sh"></script>
+<script type="application/javascript" src="https://gist.github.com/mtpereira/7362206e271de79c545956afcc77af3a.js?file=minikube-setup.sh"></script>
 
 <p>To start a cluster on minikube using xhyve, run the following:</p>
-
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">minikube start --vm-driver xhyve --insecure-registry localhost:5000</code></pre></div>
-
 <p>This will create a VM and configure a single-node Kubernetes cluster inside it.
 We&rsquo;ll see in a bit why we need the <code>--insecure-registry</code> flag.</p>
-
 <p>I&rsquo;d recommend to add this command to your shell&rsquo;s aliases so that you do not
 forget to start your cluster with these options:</p>
-
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">alias</span> minikube-start<span class="o">=</span><span class="s1">&#39;minikube start --vm-driver xhyve --insecure-registry localhost:5000&#39;</span></code></pre></div>
-
-<h1 id="using-minikube-s-docker-daemon-from-our-localhost">Using minikube&rsquo;s Docker daemon from our localhost</h1>
-
+<h1 id="using-minikubes-docker-daemon-from-our-localhost">Using minikube&rsquo;s Docker daemon from our localhost</h1>
 <p>Since we&rsquo;re already running a Docker daemon inside minikube&rsquo;s VM, we should take
 advantage of this instead of relying on another VM. This really saves up some
 resources on your host and keeps things simple.</p>
-
 <p>In order to do that, you just need to run the following and you&rsquo;re ready to go:</p>
-
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">eval</span> <span class="k">$(</span>minikube docker-env<span class="k">)</span></code></pre></div>
-
 <h1 id="running-a-local-private-docker-registry">Running a local private Docker registry</h1>
-
 <p>Kubernetes provides an add-on for running a private Docker registry inside your
 cluster, which is documented
 <a href="https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/registry">here</a>.
 However, there are a couple of caveats that you need to consider when running it
 inside <code>minikube</code>.</p>
-
 <p>Currently, there&rsquo;s <a href="https://github.com/kubernetes/minikube/issues/461#issuecomment-238326420">limited
 support</a>
 for adding add-ons automatically to the Kubernetes cluster running on minikube. As
 such, our registry manifest will be a little different from the official one:</p>
-
-<script type="application/javascript" src="//gist.github.com/mtpereira/7362206e271de79c545956afcc77af3a.js?file=local-registry.yml"></script>
+<script type="application/javascript" src="https://gist.github.com/mtpereira/7362206e271de79c545956afcc77af3a.js?file=local-registry.yml"></script>
 
 <p>I&rsquo;ve also decided to keep this local registry ephemeral, which is okay for me at
 this point, given that I&rsquo;m dealing with really small images. This can be
 easily changed to use a persistent volume as described on the
 <a href="https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/registry">registry add-on documentation</a>.</p>
-
 <p>The <code>--insecure-registry localhost:5000</code> that we&rsquo;ve used on the <code>minikube start</code>
 command is relevant here, because it allows for the Docker daemon running on the
 minikube node to connect to an insecure Docker registry, without using SSL. This
 simplifies the setup process without any real disadvantage, since we&rsquo;ll be using
 this same Docker daemon to build and push our images, so nothing will be sent
 over external networks.</p>
-
 <p>Execute this command to deploy the registry on your cluster:</p>
-
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">kubectl apply -f local-registry.yml</code></pre></div>
-
-<h1 id="tl-dr">TL;DR</h1>
-
-<script type="application/javascript" src="//gist.github.com/mtpereira/7362206e271de79c545956afcc77af3a.js?file=tldr.sh"></script>
+<h1 id="tldr">TL;DR</h1>
+<script type="application/javascript" src="https://gist.github.com/mtpereira/7362206e271de79c545956afcc77af3a.js?file=tldr.sh"></script>
 
 <h1 id="conclusion">Conclusion</h1>
-
 <p>At this point, you&rsquo;ll now be able to build and push containers to a local
 private registry, as well as deploy them to a local Kubernetes cluster. I
 believe this a great setup to develop applications which will run on a similar
 environment in production, simplifying the development flow and setup and, at
 the same time, reducing the possibility of &ldquo;works-on-my-machine&rdquo; issues.</p>
-
 <p>If you&rsquo;d like to discuss this post, please drop me a line using <a href="about">any of my contacts</a>.</p>
-
 <h1 id="resources">Resources</h1>
-
 <ol>
 <li><a href="http://thenewstack.io/tutorial-configuring-ultimate-development-environment-kubernetes/">&ldquo;Configuring the Ultimate Development Environment for Kubernetes&rdquo;</a></li>
 <li><a href="https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/registry">&ldquo;Private Docker Registry in Kubernetes&rdquo;</a></li>
@@ -269,7 +240,7 @@ the same time, reducing the possibility of &ldquo;works-on-my-machine&rdquo; iss
                 </div>
 
                 <p class="footer-copyright">
-                    <span>&copy; 2019 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                    <span>&copy; 2020 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
                 </p>
                 <p class="footer-copyright">
                     <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>

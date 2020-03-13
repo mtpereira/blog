@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on mtpereira</title>
@@ -7,49 +7,13 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Manuel Tiago Pereira</copyright>
-    <lastBuildDate>Tue, 02 Jun 2015 00:26:46 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 Nov 2016 10:21:42 +0000</lastBuildDate>
     
 	<atom:link href="https://mtpereira.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Ansible</title>
-      <link>https://mtpereira.com/tags/ansible/</link>
-      <pubDate>Tue, 02 Jun 2015 00:26:46 +0000</pubDate>
-      
-      <guid>https://mtpereira.com/tags/ansible/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ci</title>
-      <link>https://mtpereira.com/tags/ci/</link>
-      <pubDate>Tue, 02 Jun 2015 00:26:46 +0000</pubDate>
-      
-      <guid>https://mtpereira.com/tags/ci/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Development</title>
-      <link>https://mtpereira.com/tags/development/</link>
-      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
-      
-      <guid>https://mtpereira.com/tags/development/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Docker</title>
-      <link>https://mtpereira.com/tags/docker/</link>
-      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
-      
-      <guid>https://mtpereira.com/tags/docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ejson</title>
+      <title>ejson</title>
       <link>https://mtpereira.com/tags/ejson/</link>
       <pubDate>Sun, 06 Nov 2016 10:21:42 +0000</pubDate>
       
@@ -58,52 +22,7 @@
     </item>
     
     <item>
-      <title>Ghost</title>
-      <link>https://mtpereira.com/tags/ghost/</link>
-      <pubDate>Tue, 02 Jun 2015 00:26:46 +0000</pubDate>
-      
-      <guid>https://mtpereira.com/tags/ghost/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Kubernetes</title>
-      <link>https://mtpereira.com/tags/kubernetes/</link>
-      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
-      
-      <guid>https://mtpereira.com/tags/kubernetes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Macos</title>
-      <link>https://mtpereira.com/tags/macos/</link>
-      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
-      
-      <guid>https://mtpereira.com/tags/macos/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Minikube</title>
-      <link>https://mtpereira.com/tags/minikube/</link>
-      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
-      
-      <guid>https://mtpereira.com/tags/minikube/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Registry</title>
-      <link>https://mtpereira.com/tags/registry/</link>
-      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
-      
-      <guid>https://mtpereira.com/tags/registry/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Secrets</title>
+      <title>secrets</title>
       <link>https://mtpereira.com/tags/secrets/</link>
       <pubDate>Sun, 06 Nov 2016 10:21:42 +0000</pubDate>
       
@@ -112,7 +31,7 @@
     </item>
     
     <item>
-      <title>Terraform</title>
+      <title>terraform</title>
       <link>https://mtpereira.com/tags/terraform/</link>
       <pubDate>Sun, 06 Nov 2016 10:21:42 +0000</pubDate>
       
@@ -121,7 +40,88 @@
     </item>
     
     <item>
-      <title>Testing</title>
+      <title>development</title>
+      <link>https://mtpereira.com/tags/development/</link>
+      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/tags/development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://mtpereira.com/tags/docker/</link>
+      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubernetes</title>
+      <link>https://mtpereira.com/tags/kubernetes/</link>
+      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>macos</title>
+      <link>https://mtpereira.com/tags/macos/</link>
+      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/tags/macos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>minikube</title>
+      <link>https://mtpereira.com/tags/minikube/</link>
+      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/tags/minikube/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>registry</title>
+      <link>https://mtpereira.com/tags/registry/</link>
+      <pubDate>Sat, 15 Oct 2016 08:10:12 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/tags/registry/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ansible</title>
+      <link>https://mtpereira.com/tags/ansible/</link>
+      <pubDate>Tue, 02 Jun 2015 00:26:46 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/tags/ansible/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ci</title>
+      <link>https://mtpereira.com/tags/ci/</link>
+      <pubDate>Tue, 02 Jun 2015 00:26:46 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/tags/ci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ghost</title>
+      <link>https://mtpereira.com/tags/ghost/</link>
+      <pubDate>Tue, 02 Jun 2015 00:26:46 +0000</pubDate>
+      
+      <guid>https://mtpereira.com/tags/ghost/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>testing</title>
       <link>https://mtpereira.com/tags/testing/</link>
       <pubDate>Tue, 02 Jun 2015 00:26:46 +0000</pubDate>
       
@@ -130,7 +130,7 @@
     </item>
     
     <item>
-      <title>Travisci</title>
+      <title>travisci</title>
       <link>https://mtpereira.com/tags/travisci/</link>
       <pubDate>Tue, 02 Jun 2015 00:26:46 +0000</pubDate>
       
@@ -139,7 +139,7 @@
     </item>
     
     <item>
-      <title>Vagrant</title>
+      <title>vagrant</title>
       <link>https://mtpereira.com/tags/vagrant/</link>
       <pubDate>Tue, 02 Jun 2015 00:26:46 +0000</pubDate>
       
