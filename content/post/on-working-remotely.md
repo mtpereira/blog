@@ -10,9 +10,9 @@ Fortunately, I've also found a few methods, tools and tips that really helped me
 
 ## Routines
 
-- Find a schedule for your work hours and stick to it as close as possible. This will make it easier to avoid falling into two related traps: under-working and over-working. You'll have to take into account our asynchronous your team is when building this schedule and account for any meetings you might have. Having activities around those hours will also reinforce that you should start and stop working at certain times of the day (see the next point).
+- Find a schedule for your work hours and stick to it as close as possible. This will make it easier to avoid falling into two related traps: under-working and over-working. You'll have to take into account how asynchronous your team is when building this schedule and account for any meetings you might have. Having activities around those hours will also reinforce that you should start and stop working at certain times of the day (see the next point).
 
-- Create habits that allows you to get out of the house before, during and after work hours. This could be going for a walk/run/cycle before working, having a coffee after lunch in a nearby coffee shop and go grocery shopping after work. The main goal here is avoiding isolation at your place, since for many people most social interactions are made at the office. [^1]
+- Create habits that allow you to get out of the house before, during and after work hours. This could be going for a walk/run/cycle before working, having a coffee after lunch in a nearby coffee shop and go grocery shopping after work. The main goal here is avoiding isolation at your place, since for many people most social interactions are made at the office. [^1]
 
 - Allocate some space in your home exclusively for work. Again, the goal here is to help your mind figure out when is work time and when work is finished. I find that having a physical space that represents that is very helpful, even if it just a different desk in a room might be used for other activities.
 
@@ -32,7 +32,7 @@ Fortunately, I've also found a few methods, tools and tips that really helped me
 
 ## Tools
 
-- Get a proper headset, with a unidirectional or bidirectional microphone. Your team mates hears will thank you! I'm using the SteelSeries Arctis 3, which is wired, cheap and has a decent microphone.
+- Get a proper headset, with a unidirectional or bidirectional microphone. Your team mates' ears will thank you! I'm using the SteelSeries Arctis 3, which is wired, cheap and has a decent microphone.
 
 - Invest in ergonomics and comfort in your home office. Get a proper keyboard (you'll be alone most of the time, time to get those clicky mechanical keyboards out!), an ergonomic mouse and a high-resolution, big display (I'd recommend at least 23'' inch Full-HD display, but a 4K display is preferable) and a good chair (it should have arms raiser, a flat back and be as adjustable as possible). A standing desk might also be helpful, although I personally do not use them, as I just tend to move plenty and often.
 
